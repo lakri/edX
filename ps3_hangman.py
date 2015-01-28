@@ -113,11 +113,10 @@ def hangman(secretWord):
     '''
     # FILL IN YOUR CODE HERE...
     lettersGuessed = []
-    mistakesMade = 0
     print("Welcome to the game, Hangman!")
     print("I am thinking of a word that is {} letters long.".format(len(secretWord)))
 
-    def guessLetter():
+    def guessLetter(mistakesMade):
         print("-------------")
         print("You have {} guesses left.".format(8 - mistakesMade))
         print("Available letters: {}".format(getAvailableLetters(lettersGuessed)))
@@ -126,20 +125,20 @@ def hangman(secretWord):
 
         if letter in lettersGuessed:
             print("Oops! You've already guessed that letter: {}".format(getGuessedWord(secretWord, lettersGuessed)))
-            return
+            return True
         elif letter in secretWord:
             lettersGuessed.append(letter)
             print("Good guess: {}".format(getGuessedWord(secretWord, lettersGuessed)))
-            return
+            return True
         else:
             print("Oops! That letter is not in my word: {}".format(getGuessedWord(secretWord, lettersGuessed)))
             lettersGuessed.append(letter)
-            mistakesMade += 1
-            return
+            return False
 
-
+    mistakesMade = 0
     while (not isWordGuessed(secretWord,lettersGuessed)):
-        guessLetter()
+        if not guessLetter(mistakesMade):
+            mistakesMade += 1
         if mistakesMade == 8:
             print('-----------')
             print('Sorry, you ran out of guesses. The word was else.')
