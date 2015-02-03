@@ -109,8 +109,9 @@ def displayHand(hand):
     """
     for letter in hand.keys():
         for j in range(hand[letter]):
-             print letter,              # print all on the same line
-   # print                               # print an empty line
+            print letter, 
+   
+    print 
 
 #
 # Problem #2: Make sure you understand how this function works and what it does!
@@ -239,7 +240,8 @@ def playHand(hand, wordList, n):
     # As long as there are still letters left in the hand:
     while calculateHandlen(hand) != 0:
         # Display the hand
-        print("Current Hand: {}".format(displayHand(hand)))
+        print "Current Hand:",
+        displayHand(hand)
         # Ask user for input
         inputWord = raw_input('Enter word, or a "." to indicate that you are finished: ')
         inputWord = inputWord.lower()
@@ -300,5 +302,5 @@ def playGame(wordList):
 if __name__ == '__main__':
     wordList = loadWords()
     playHand({'w':1, 's':1, 't':2, 'a':1, 'o':1, 'f':1}, wordList, 7)
-
+    #displayHand({'a':1, 'x':2, 'l':3, 'e':1})
     playGame(wordList)
