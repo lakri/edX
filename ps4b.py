@@ -25,20 +25,32 @@ def compChooseWord(hand, wordList, n):
     """
     # BEGIN PSEUDOCODE <-- Remove this comment when you code this function; do your coding within the pseudocode (leaving those comments in-place!)
     # Create a new variable to store the maximum score seen so far (initially 0)
-
+    maxScore = 0
     # Create a new variable to store the best word seen so far (initially None)  
+    bestWord = 'None'
+    def canConstructFromHand(hand, word):
+        newHand = hand.copy()
+        for letter in word:
+            value = newHand.get(letter,0)
+            newValue = value - 1
+            if newValue < 0:
+                return False
+            newHand[letter] = newValue
+        return True
 
     # For each word in the wordList
+    for word in wordList:
 
         # If you can construct the word from your hand
         # (hint: you can use isValidWord, or - since you don't really need to test if the word is in the wordList - you can make a similar function that omits that test)
-
+        if canConstructFromHand(hand, word):
             # Find out how much making that word is worth
-
+                if getWordScore(word,n) > maxScore:
             # If the score for that word is higher than your best score
-
+                    maxScore = getWordScore(word,n)
                 # Update your best score, and best word accordingly
-
+                    bestWord = word
+    return bestWord
 
     # return the best word you found.
 
@@ -66,6 +78,44 @@ def compPlayHand(hand, wordList, n):
     n: integer (HAND_SIZE; i.e., hand size required for additional points)
     """
     # TO DO ... <-- Remove this comment when you code this function
+     # Keep track of the total score
+    totalScore = 0
+    
+    # As long as there are still letters left in the hand:
+    while calculateHandlen(hand) != 0:
+        # Display the hand
+        print "Current Hand:",
+        displayHand(hand)
+        # Ask user for input
+        computerWord = compChooseWord(hand, wordList, n)
+        # If the input is a single period:
+        if computerWord == "None":
+            # End the game (break out of the loop)
+            break
+        else:
+        # Otherwise (the input is not a single period):
+           
+            # If the word is not valid:
+            if not isValidWord(computerWord, hand, wordList):
+                # Reject invalid word (print a message followed by a blank line)
+                print("Invalid word, please try again.")
+                print('')
+            # Otherwise (the word is valid):
+            else:
+                totalScore += getWordScore(computerWord, n)
+                print("{} earned {} points. Total: {} points".format(computerWord, getWordScore(computerWord, n), totalScore))                
+                print('')
+                # Tell the user how many points the word earned, and the updated total score, in one line followed by a blank line
+                
+                # Update the hand 
+                hand = updateHand(hand, computerWord)
+    
+    if computerWord == "None" or calculateHandlen(hand) == 0  :
+        print("Total score: "+str(totalScore)+" points.")
+        
+
+
+
     
 #
 # Problem #8: Playing a game
@@ -104,6 +154,8 @@ def playGame(wordList):
 #
 if __name__ == '__main__':
     wordList = loadWords()
+    print( compPlayHand({'a': 2, 'c': 1, 'b': 1, 't': 1}, wordList, 5))
+
     playGame(wordList)
 
 
